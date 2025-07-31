@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xen Rewrite</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-gray: #121212;
+            --darker-gray: #0a0a0a;
+            --light-gray: #1e1e1e;
+            --orange-glow: #FF8C00;
+            --orange-dark: #D2691E;
+            --text-color: #e0e0e0;
+            --text-muted: #aaaaaa;
+            --blue-krypton: #0074f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-gray);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Logo styles */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .logo {
+            height: 80px;
+            width: auto;
+            filter: drop-shadow(0 0 10px var(--orange-glow));
+        }
+
+        /* Header styles */
+        header {
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        h1.glowing-text {
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--orange-glow);
+            text-shadow: 0 0 10px var(--orange-glow), 0 0 20px rgba(255, 140, 0, 0.5);
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            animation: pulse 2s infinite alternate;
+        }
+
+        .subtitle {
+            font-family: 'Roboto Mono', monospace;
+            color: var(--orange-dark);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .subtitle2 {
+            font-family: 'Roboto Mono', monospace;
+            color: #ffffff;
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .krypton-text {
+            color: var(--blue-krypton);
+        }
+
+        /* Particle background container */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            background: linear-gradient(to bottom, var(--darker-gray), var(--dark-gray));
+        }
+
+        /* Hero section */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3rem 0;
+            gap: 2rem;
+        }
+
+        .hero-content {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .hero-image {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .hero h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+        }
+
+        /* Download buttons */
+        .download-buttons {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .btn-download {
+            position: relative;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 200px;
+        }
+
+        .btn-glow {
+            background-color: var(--light-gray);
+            color: var(--orange-glow);
+            border: 1px solid var(--orange-dark);
+            box-shadow: 0 0 10px rgba(255, 140, 0, 0.3);
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 0 20px rgba(255, 140, 0, 0.625);
+            transform: translateY(-3px);
+        }
+
+        .btn-discord {
+            background-color: #5865F2;
+            color: white;
+            border: none;
+        }
+
+        .btn-discord:hover {
+            background-color: #4752C4;
+        }
+
+        .btn-text {
+            font-family: 'Roboto Mono', monospace;
+            margin-right: 0.5rem;
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Security badges */
+        .security-badges {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .badge .icon {
+            margin-right: 0.3rem;
+        }
+
+        /* Screenshot styling */
+        .image-container {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container:hover {
+            transform: scale(1.02);
+        }
+
+        .screenshot {
+            width: 100%;
+            display: block;
+            border: 1px solid rgba(255, 140, 0, 0.2);
+        }
+
+        .glow-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            box-shadow: inset 0 0 50px rgba(255, 140, 0, 0.1);
+            pointer-events: none;
+        }
+
+        /* Features section */
+        .features {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            color: var(--orange-glow);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: var(--orange-dark);
+            margin: 0.5rem auto;
+            border-radius: 3px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: var(--light-gray);
+            padding: 2rem;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 140, 0, 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 140, 0, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--orange-glow);
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* FAQ section */
+        .faq {
+            padding: 4rem 0;
+        }
+
+        .faq-item {
+            background-color: var(--light-gray);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 140, 0, 0.1);
+        }
+
+        .faq-item h2 {
+            font-size: 1.5rem;
+            color: var(--orange-glow);
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-item p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+
+        .faq-item code {
+            background-color: var(--dark-gray);
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            color: var(--orange-glow);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--darker-gray);
+            padding: 2rem 0;
+            text-align: center;
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 140, 0, 0.1);
+        }
+
+        footer p {
+            margin-bottom: 1rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            color: var(--orange-dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: var(--orange-glow);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% {
+                text-shadow: 0 0 10px var(--orange-glow), 0 0 20px rgba(255, 140, 0, 0.5);
+            }
+            100% {
+                text-shadow: 0 0 15px var(--orange-glow), 0 0 30px rgba(255, 140, 0, 0.8);
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            h1.glowing-text {
+                font-size: 3rem;
+            }
+
+            .hero {
+                flex-direction: column;
+            }
+
+            .download-buttons {
+                justify-content: center;
+            }
+
+            .security-badges {
+                justify-content: center;
+            }
+        }
+    </style>
+
+    <!-- Discord Embed Metadata -->
+    <meta property="og:title" content="Xen Rewrite">
+    <meta property="og:description" content="'The better krypton'">
+    <meta property="og:url" content="https://xenrewrite.github.io/xen/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Xen Rewrite">
+    <meta name="theme-color" content="#0074f0">
+</head>
+<body>
+<div id="particles-js"></div>
+
+<header>
+    <div class="container">
+        <h1 class="glowing-text">Xen Rewrite</h1>
+        <p class="subtitle"><span class="subtitle2">The better</span> <span class="krypton-text">krypton</span></p>
+    </div>
+</header>
+
+<main class="container">
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Xen Rewrite</h2>
+            <p>Be better than the skids. Embrace Xen</p>
+
+            <div class="download-buttons">
+                <button class="btn-download btn-glow" id="Download Xen" onclick="window.location.href='assets/XenREWRITE.jar'">
+                    <span class="btn-text">Download Jar</span>
+                    <span class="btn-icon">↓</span>
+                </button>
+
+                <button class="btn-download btn-glow" id="FAQ" onclick="window.location.href='#faq-section'">
+                    <span class="btn-text">FAQ</span>
+                    <span class="btn-icon">↓</span>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="hero-image">
+            <div class="image-container">
+                <img src="images/xen_gui.png" alt="Look at xen" class="screenshot">
+                <div class="glow-effect"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <h2 class="section-title">Why Choose Xen?</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Lightning Fast</h3>
+                <p>Optimized to minimize impact on your game performance while delivering powerful features.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔧</div>
+                <h3>Customizable</h3>
+                <p>Tailor every aspect to your playstyle with extensive configuration options.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔄</div>
+                <h3>Regular Updates</h3>
+                <p>Continually updated to stay ahead of detection methods and add new features.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq" id="faq-section">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h2>What is Xen?</h2>
+            <p>Xen is an addon for Krypton client. You don't need Krypton to use Xen. Xen is mainly made for DonutSMP.net.</p>
+        </div>
+        <div class="faq-item">
+            <h2>What Minecraft versions does Xen support?</h2>
+            <p>Xen currently supports Fabric 1.21 only.</p>
+        </div>
+        <div class="faq-item">
+            <h2>How do I install Xen?</h2>
+            <p>Download <code>Xen</code> from the homepage and place it in your Minecraft mods folder.</p>
+        </div>
+        <div class="faq-item">
+            <h2>How do I update Xen?</h2>
+            <p>Simply redownload Xen every 2 weeks to stay up to date.</p>
+        </div>
+        <div class="faq-item">
+            <h2>Is Xen allowed on all servers?</h2>
+            <p>No. Using Xen may violate server rules. Use it at your own risk.</p>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>Xen is a cheat. As so you can get banned. We are not responsible.</p>
+        <p>Not affiliated with Mojang or Microsoft.</p>
+        <p>© 2025 Xen. All rights reserved.</p>
+        <div class="social-links">
+            <a href="https://github.com/XenRewrite" class="social-icon">Github</a>
+        </div>
+    </div>
+</footer>
+
+<script src="js/particles.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize particles.js with enhanced constellation effect
+        particlesJS('particles-js', {
+            "particles": {
+                "number": {
+                    "value": 150,
+                    "density": {
+                        "enable": true,
+                        "value_area": 1000
+                    }
+                },
+                "color": {
+                    "value": "#FF8C00"
+                },
+                "shape": {
+                    "type": ["circle"],
+                    "stroke": {
+                        "width": 0,
+                        "color": "#FF8C00"
+                    }
+                },
+                "opacity": {
+                    "value": 0.7,
+                    "random": true,
+                    "anim": {
+                        "enable": true,
+                        "speed": 0.3,
+                        "opacity_min": 0.2,
+                        "sync": false
+                    }
+                },
+                "size": {
+                    "value": 15,
+                    "random": {
+                        "enable": true,
+                        "minimumValue": 1
+                    },
+                    "anim": {
+                        "enable": true,
+                        "speed": 2.0,
+                        "size_min": 0.5,
+                        "sync": false
+                    }
+                },
+                "line_linked": {
+                    "enable": true,
+                    "distance": 300,
+                    "color": "#FF8C00",
+                    "opacity": 0.25,
+                    "width": 1
+                },
+                "move": {
+                    "enable": true,
+                    "speed": 0.3,
+                    "direction": "none",
+                    "random": true,
+                    "straight": false,
+                    "out_mode": "bounce",
+                    "bounce": true,
+                    "attract": {
+                        "enable": true,
+                        "rotateX": 400,
+                        "rotateY": 800
+                    }
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": {
+                    "onhover": {
+                        "enable": false
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "resize": true
+                },
+                "modes": {
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    }
+                }
+            },
+            "retina_detect": true
+        });
+
+        // Button hover effects
+        const buttons = document.querySelectorAll('.btn-download');
+        buttons.forEach(button => {
+            button.addEventListener('mousemove', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                this.style.setProperty('--mouse-x', `${x}px`);
+                this.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    });
+</script>
+</body>
+</html>
