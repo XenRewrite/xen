@@ -39,7 +39,6 @@
             padding: 0 20px;
         }
 
-        /* Logo styles */
         .logo-container {
             display: flex;
             align-items: center;
@@ -53,7 +52,6 @@
             filter: drop-shadow(0 0 10px var(--orange-glow));
         }
 
-        /* Header styles */
         header {
             padding: 2rem 0;
             text-align: center;
@@ -88,7 +86,6 @@
             color: var(--blue-krypton);
         }
 
-        /* Particle background container */
         #particles-js {
             position: fixed;
             width: 100%;
@@ -99,7 +96,6 @@
             background: linear-gradient(to bottom, var(--darker-gray), var(--dark-gray));
         }
 
-        /* Hero section */
         .hero {
             display: flex;
             flex-wrap: wrap;
@@ -132,7 +128,6 @@
             color: var(--text-muted);
         }
 
-        /* Download buttons */
         .download-buttons {
             display: flex;
             gap: 1rem;
@@ -186,8 +181,6 @@
         .btn-icon {
             font-size: 1.2rem;
         }
-
-        /* Security badges */
         .security-badges {
             display: flex;
             gap: 1rem;
@@ -208,7 +201,6 @@
             margin-right: 0.3rem;
         }
 
-        /* Screenshot styling */
         .image-container {
             position: relative;
             border-radius: 8px;
@@ -237,7 +229,6 @@
             pointer-events: none;
         }
 
-        /* Features section */
         .features {
             padding: 4rem 0;
         }
@@ -297,7 +288,6 @@
             font-size: 0.95rem;
         }
 
-        /* FAQ section */
         .faq {
             padding: 4rem 0;
         }
@@ -327,8 +317,6 @@
             border-radius: 3px;
             color: var(--orange-glow);
         }
-
-        /* Footer */
         footer {
             background-color: var(--darker-gray);
             padding: 2rem 0;
@@ -360,7 +348,6 @@
             color: var(--orange-glow);
         }
 
-        /* Animations */
         @keyframes pulse {
             0% {
                 text-shadow: 0 0 10px var(--orange-glow), 0 0 20px rgba(255, 140, 0, 0.5);
@@ -370,7 +357,6 @@
             }
         }
 
-        /* Responsive adjustments */
         @media (max-width: 768px) {
             h1.glowing-text {
                 font-size: 3rem;
@@ -390,7 +376,6 @@
         }
     </style>
 
-    <!-- Discord Embed Metadata -->
     <meta property="og:title" content="Xen Rewrite">
     <meta property="og:description" content="'The better krypton'">
     <meta property="og:url" content="https://xenrewrite.github.io/xen/">
@@ -416,7 +401,7 @@
 
             <div class="download-buttons">
                 <button class="btn-download btn-glow" id="Download Xen" onclick="window.location.href='assets/XenREWRITE.jar'">
-                    <span class="btn-text">Download Jar</span>
+                    <span class="btn-text">Download Xen</span>
                     <span class="btn-icon">↓</span>
                 </button>
 
@@ -485,6 +470,7 @@
 <footer>
     <div class="container">
         <p>Xen is a cheat. As so you can get banned. We are not responsible.</p>
+        <p>Xen is not just a skidded krypton. Xen is actively known as an ADDON for krypton. We did rewrite every krypton module.<p> 
         <p>Not affiliated with Mojang or Microsoft.</p>
         <p>© 2025 Xen. All rights reserved.</p>
         <div class="social-links">
@@ -496,7 +482,6 @@
 <script src="js/particles.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Initialize particles.js with enhanced constellation effect
         particlesJS('particles-js', {
             "particles": {
                 "number": {
@@ -583,7 +568,6 @@
             "retina_detect": true
         });
 
-        // Button hover effects
         const buttons = document.querySelectorAll('.btn-download');
         buttons.forEach(button => {
             button.addEventListener('mousemove', function(e) {
